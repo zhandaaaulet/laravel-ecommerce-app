@@ -95,14 +95,14 @@
 
                     <div class="cart-totals-right">
                         <div>
-                            Subtotal <br>
-                            Tax <br>
-                            <span class="cart-totals-total">Total</span>
+                            Subtotal: <br>
+                            Tax(13%): <br>
+                            <span class="cart-totals-total">Total:</span>
                         </div>
                         <div class="cart-totals-subtotal">
-                            $7499.97 <br>
-                            $975.00 <br>
-                            <span class="cart-totals-total">$8474.97</span>
+                            {{presentPrice(\Gloudemans\Shoppingcart\Facades\Cart::subtotal())}} <br>
+                            {{presentPrice(\Gloudemans\Shoppingcart\Facades\Cart::tax())}} <br>
+                            <span class="cart-totals-total">{{presentPrice(\Gloudemans\Shoppingcart\Facades\Cart::total())}}</span>
                         </div>
                     </div>
                 </div> <!-- end cart-totals -->
@@ -114,6 +114,9 @@
 
             @else
                 <h3>No items in Cart!</h3>
+                <div class="spacer"></div>
+                <a href="{{route('shop.index')}}" class="button">Continue Shopping</a>
+                <div class="spacer"></div>
             @endif
 
 
@@ -139,7 +142,7 @@
                                 <option>2</option>
                                 <option>3</option>
                                 <option>4</option>
-                                <option>5</option>
+                                <option>5</optАion>
                             </select>
                         </div> --}}
                         <div>$2499.99</div>
