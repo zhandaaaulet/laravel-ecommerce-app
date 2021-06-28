@@ -32,9 +32,38 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success_message', 'Item was added successfully!');
     }
 
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        Cart::destroy($request->id);
+        Cart::remove($id);
         return back()->with('success_message', 'Item has been removed!');
+    }
+
+    /**
+     * Switch item for shopping cart to Save for Later
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     */
+
+    public function switchToSaveForLater($id)
+    {
+        $item = Cart::get($id);
+
+        Cart::remove($id);
+
+        $duplicates = Cart::instance('saveForLater')->search(function ($cartItem, $rowId) use ($id) {
+            return $rowId === $id;
+        });
+
+        if ($duplicates->isNotEmpty()) {
+            return redirect()->route('cart.index')->with('success_message', 'Item is already Saved For Later!');
+        }
+
+        Cart::instance('saveForLater')->add($item->id, $item->name, 1, $item->price)
+            ->associate('App\Product');
+
+
+        return redirect()->route('cart.index')->with('success_message', 'Item has been Saved For Later!');
     }
 }
